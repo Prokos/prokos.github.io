@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Berta & Kasper's Wedding - June 28th 2025</title>
 	<link rel="stylesheet" href="style.css">
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -14,24 +15,88 @@
 		<img src="assets/family.png" />
 		<h2>We are getting married!</h2>
 		<p>
-			Yes hello it is true we are <strong>getting married</strong>, big whoop 🤡. <br />
+			Yes hello it is true we are <strong>getting married</strong><br />
 			In other words: Doei.
 		</p>
-		<h3>🌍 More info</h3>
+		<hr/>
+		<h3>More info</h3>
 		<ul>
 			<li>Yes, it is still happening</li>
 			<li>Nothing changed</li>
 			<li>Btw it's june 28th 2025</li>
 		</ul>
+		<hr />
+		<h2>Let us know if you're coming!</h2>
 		<p>
-			Like I said, yes it's true.
-			If you feel like it, click the button below for more truths.
-			Free truths. Come get your truths.
+			We really hope you can join us! Please let us know if you can make it by filling in your key below and then setting your RSVP!
 		</p>
-		<button id="truth">Get the truth</button>
-		<p id="truth-destination"></p>
-		<script src="main.js"></script>
+		<form id="rsvp-find">
+			<input type="text" placeholder="Your key" name="key" />
+			<button type="submit">Find me</button>
+		</form>
+		<div id="rsvp-result">
+			<h2>Hey <span id="rsvp-name">Friend</span>!</h2>
+
+			Accomodation for the wedding night is on us.<br/><br/> Please let us know with who you are coming so we can ensure everyone has a nice stay!
+
+			<form id="rsvp-form">
+				<strong>Adults</strong>
+				<fieldset>
+					<input type="radio" name="adults" id="adults-0" value="0" checked />
+					<label for="adults-0">Cannot make it :(</label>
+				</fieldset>
+				<fieldset>
+					<input type="radio" name="adults" id="adults-1" value="1"  />
+					<label for="adults-1">Just me!</label>
+				</fieldset>
+				<fieldset>
+					<input type="radio" name="adults" id="adults-2" value="2"  />
+					<label for="adults-2">Me and my partner!</label>
+				</fieldset>
+
+				<div id="rsvp-kids-and-babies">
+					<strong>Kids (sleep in a normal bed)</strong>
+					<fieldset>
+						<input type="radio" name="kids" id="kids-0" value="0" checked />
+						<label for="kids-0">No kids</label>
+					</fieldset>
+					<fieldset>
+						<input type="radio" name="kids" id="kids-1" value="1"  />
+						<label for="kids-1">1 kid</label>
+					</fieldset>
+					<fieldset>
+						<input type="radio" name="kids" id="kids-2" value="2"  />
+						<label for="kids-2">2 kids</label>
+					</fieldset>
+
+					<strong>Babies (sleep in a baby bed)</strong>
+					<fieldset>
+						<input type="radio" name="babies" id="babies-0" value="0" checked />
+						<label for="babies-0">No babies</label>
+					</fieldset>
+					<fieldset>
+						<input type="radio" name="babies" id="babies-1" value="1"  />
+						<label for="babies-1">1 baby</label>
+					</fieldset>
+					<fieldset>
+						<input type="radio" name="babies" id="babies-2" value="2"  />
+						<label for="babies-2">2 babies</label>
+					</fieldset>
+				</div>
+
+				<button type="submit">Save RSVP</button>
+
+				<div id="saved-at"></div>
+			</form>
+
+		</div>
+		<hr />
+		<p>
+			Made any pictures? Please add them to <a href="https://photos.app.goo.gl/KW9C3FCuPdHZLJ6W7" target="_blank">this album</a>!
+		</p>
 	</div>
+
+	<script src="main.js"></script>
 </body>
 
 </html>
