@@ -42,7 +42,7 @@ body {
 	min-width: 350px;
 }
 
-img {
+img, canvas {
 	display: block;
 	margin: 0 auto 40px;
 	max-width: 600px;
@@ -135,7 +135,7 @@ fieldset {
 }
 
 #rsvp-result {
-	width: 600px;
+	max-width: 600px;
 	margin: 0 auto;
 	border: 4px dashed #444;
 	border-radius: 10px;
