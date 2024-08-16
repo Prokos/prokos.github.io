@@ -41,8 +41,6 @@ rsvpFind.addEventListener('submit', async event => {
 	let babies = data.number_of_babies;
 	let savedAt = new Date(data.updated_at);
 
-	document.getElementById('saved-at').textContent = data.updated_at ? 'RSVP last updated ' + savedAt.toLocaleString() : '';
-
 	rsvpForm.addEventListener('change', event => {
 		const formData = new FormData(event.target.form);
 
@@ -72,4 +70,20 @@ rsvpFind.addEventListener('submit', async event => {
 
 		document.getElementById('saved-at').textContent = 'RSVP last updated ' + savedAt.toLocaleString();
 	});
+
+	document.getElementById('saved-at').textContent = data.updated_at ? 'RSVP last updated ' + savedAt.toLocaleString() : '';
+
+	document.querySelectorAll('input[name="adults"]').forEach(input => {
+		input.checked = parseInt(input.value) === adults;
+	});
+
+	document.querySelectorAll('input[name="kids"]').forEach(input => {
+		input.checked = parseInt(input.value) === kids;
+	});
+
+	document.querySelectorAll('input[name="babies"]').forEach(input => {
+		input.checked = parseInt(input.value) === babies;
+	});
+
+	rsvpKidsAndBabies.style.display = adults > 0 ? 'block' : 'none';
 });
