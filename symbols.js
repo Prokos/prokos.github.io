@@ -5,7 +5,7 @@ let generatedAtWidthXHeight = 0;
 
 const symbols = [];
 const generate = (width, height) => {
-	if (width < 1000) return;
+	// if (width < 1000) return;
 
 	const images = [
 		'windmill.png',
