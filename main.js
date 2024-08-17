@@ -13,10 +13,17 @@ const localeOptions = {
 };
 
 const rsvpFind = document.getElementById('rsvp-find');
+const rsvpFindSubmit = rsvpFind.querySelector('button[type=submit]');
 const rsvpResult = document.getElementById('rsvp-result');
 const rsvpName = document.getElementById('rsvp-name');
 const rsvpForm = document.getElementById('rsvp-form');
 const rsvpFields = document.getElementById('rsvp-fields');
+const rsvpFormSubmit = rsvpForm.querySelector('button[type=submit]');
+const cannotFind = document.getElementById('cannot-find');
+
+rsvpFind.addEventListener('change', () => {
+	cannotFind.style.display = 'none';
+});
 
 rsvpFind.addEventListener('submit', async event => {
 	event.preventDefault();
@@ -24,7 +31,14 @@ rsvpFind.addEventListener('submit', async event => {
 	const formData = new FormData(event.target);
 	const key = formData.get('key');
 
+	const oldText = rsvpFindSubmit.textContent;
+	rsvpFindSubmit.disabled = true;
+	rsvpFindSubmit.textContent = 'Searching...';
+
 	const { data, error } = await client.rpc('getVisitorByKey', { value: key })
+
+	rsvpFindSubmit.disabled = false;
+	rsvpFindSubmit.textContent = oldText;
 
 	if (error) {
 		console.error(error);
@@ -32,7 +46,7 @@ rsvpFind.addEventListener('submit', async event => {
 	}
 
 	if (data === null) {
-		alert('Visitor not found');
+		cannotFind.style.display = 'block';
 		return;
 	}
 
@@ -102,6 +116,10 @@ rsvpFind.addEventListener('submit', async event => {
 			guest.needs_baby_bed = formData.get(`needs_baby_bed-${idx}`) === '1';
 		});
 
+		const oldText = rsvpFormSubmit.textContent;
+
+		rsvpFormSubmit.disabled = true;
+		rsvpFormSubmit.textContent = 'Saving...';
 		const { data, error } = await client.rpc('updateVisitorRSVP', {
 			guests,
 			key,
@@ -111,6 +129,9 @@ rsvpFind.addEventListener('submit', async event => {
 			console.error(error);
 			return;
 		}
+
+		rsvpFormSubmit.disabled = false;
+		rsvpFormSubmit.textContent = oldText
 
 		savedAt = new Date(Date.now());
 
