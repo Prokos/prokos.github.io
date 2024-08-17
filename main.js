@@ -93,7 +93,7 @@ rsvpFind.addEventListener('submit', async event => {
 		const [key, id] = event.target.id.split('-');
 		if (key !== 'guest') return;
 
-		const changedGuestId = key[1];
+		const changedGuestId = id;
 		const guest = guests[changedGuestId];
 
 		if (!guest.kid) return;
