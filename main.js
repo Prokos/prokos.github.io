@@ -3,16 +3,20 @@ const SUPABASE_URL = 'https://asvezzujmmovbbaycpqe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzdmV6enVqbW1vdmJiYXljcHFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM4MTc4NzksImV4cCI6MjAzOTM5Mzg3OX0.afW8plWDS1BrHmKATwP4-sxnJfOI4asMEo5lHATn52g';
 const client = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-(async () => {
-	const { data, error } = await client.rpc('getVisitorByKey', { value: '' })
-	console.info(data, error);
-})();
+const localeOptions = {
+	weekday: 'long',
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+	hour: 'numeric',
+	minute: 'numeric',
+};
 
 const rsvpFind = document.getElementById('rsvp-find');
 const rsvpResult = document.getElementById('rsvp-result');
 const rsvpName = document.getElementById('rsvp-name');
 const rsvpForm = document.getElementById('rsvp-form');
-const rsvpKidsAndBabies = document.getElementById('rsvp-kids-and-babies');
+const rsvpFields = document.getElementById('rsvp-fields');
 
 rsvpFind.addEventListener('submit', async event => {
 	event.preventDefault();
@@ -36,29 +40,71 @@ rsvpFind.addEventListener('submit', async event => {
 	rsvpResult.style.display = 'block';
 	rsvpName.textContent = data.name;
 
-	let adults = data.number_of_adults;
-	let kids = data.number_of_kids;
-	let babies = data.number_of_babies;
+	rsvpFields.innerHTML = '';
+
+	const guests = data.guests || [];
 	let savedAt = new Date(data.updated_at);
 
-	rsvpForm.addEventListener('change', event => {
-		const formData = new FormData(event.target.form);
+	const sortedGuests = guests.sort((a, b) => {
+		// adults first
+		if (a.kid && !b.kid) return 1;
+		if (!a.kid && b.kid) return -1;
+	});
 
-		adults = parseInt(formData.get('adults'));
-		kids = adults > 0 ? parseInt(formData.get('kids')) : 0;
-		babies = adults > 0 ? parseInt(formData.get('babies')) : 0;
+	let showingKids = false;
+	sortedGuests.forEach(({ name, kid, needs_baby_bed, is_coming }, idx) => {
+		if (!name) return;
 
-		rsvpKidsAndBabies.style.display = adults > 0 ? 'block' : 'none';
+		if (!showingKids && kid) {
+			showingKids = true;
+			rsvpFields.innerHTML += '<h3>Kids</h3>';
+		}
+
+		const html = `
+			<fieldset class="rsvp-field">
+				<input type="checkbox" name="guest-${idx}" value="1" id="guest-${idx}" ${is_coming ? 'checked' : ''} />
+				<label for="guest-${idx}">${name}</label>
+
+				${kid ? `
+					<input type="checkbox" name="needs_baby_bed-${idx}" value="1" id="needs_baby_bed-${idx}" ${needs_baby_bed ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
+					<label for="needs_baby_bed-${idx}">Needs baby bed</label>
+				` : ''}
+			</fieldset>
+		`;
+
+		rsvpFields.innerHTML += html;
+	});
+
+	rsvpForm.addEventListener('change', async event => {
+		const [key, id] = event.target.id.split('-');
+		if (key !== 'guest') return;
+
+		const changedGuestId = key[1];
+		const guest = guests[changedGuestId];
+
+		if (!guest.kid) return;
+
+		const needsBabyBedCheckbox = document.getElementById(`needs_baby_bed-${changedGuestId}`);
+		if (event.target.checked) {
+			needsBabyBedCheckbox.disabled = false;
+		} else {
+			needsBabyBedCheckbox.disabled = true;
+			needsBabyBedCheckbox.checked = false;
+		}
 	});
 
 	rsvpForm.addEventListener('submit', async event => {
 		event.preventDefault();
 
+		const formData = new FormData(event.target);
+		guests.forEach((guest, idx) => {
+			guest.is_coming = formData.get(`guest-${idx}`) === '1';
+			guest.needs_baby_bed = formData.get(`needs_baby_bed-${idx}`) === '1';
+		});
+
 		const { data, error } = await client.rpc('updateVisitorRSVP', {
-			adults,
-			kids,
-			babies,
-			value: key,
+			guests,
+			key,
 		});
 
 		if (error) {
@@ -68,22 +114,8 @@ rsvpFind.addEventListener('submit', async event => {
 
 		savedAt = new Date(Date.now());
 
-		document.getElementById('saved-at').textContent = 'RSVP last updated ' + savedAt.toLocaleString();
+		document.getElementById('saved-at').textContent = 'RSVP last updated on ' + savedAt.toLocaleString(undefined, localeOptions);
 	});
 
-	document.getElementById('saved-at').textContent = data.updated_at ? 'RSVP last updated ' + savedAt.toLocaleString() : '';
-
-	document.querySelectorAll('input[name="adults"]').forEach(input => {
-		input.checked = parseInt(input.value) === adults;
-	});
-
-	document.querySelectorAll('input[name="kids"]').forEach(input => {
-		input.checked = parseInt(input.value) === kids;
-	});
-
-	document.querySelectorAll('input[name="babies"]').forEach(input => {
-		input.checked = parseInt(input.value) === babies;
-	});
-
-	rsvpKidsAndBabies.style.display = adults > 0 ? 'block' : 'none';
+	document.getElementById('saved-at').textContent = data.updated_at ? 'RSVP last updated on ' + savedAt.toLocaleString(undefined, localeOptions) : '';
 });
