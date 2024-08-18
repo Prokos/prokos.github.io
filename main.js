@@ -140,3 +140,7 @@ rsvpFind.addEventListener('submit', async event => {
 
 	document.getElementById('saved-at').textContent = data.updated_at ? 'RSVP last updated on ' + savedAt.toLocaleString(undefined, localeOptions) : '';
 });
+
+if (window.location.hash) {
+	rsvpFind.querySelector('input[name=key]').value = window.location.hash.slice(1);
+}

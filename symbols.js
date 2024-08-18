@@ -28,16 +28,18 @@ const generate = (width, height) => {
 			const img = document.createElement('img');
 			img.src = `assets/${images[idx % images.length]}`;
 
-			img.className = 'symbol';
-			img.style.left = `${x / width * 100}%`;
-			img.style.top = `${y / height * 100}%`;
-			img.style.animationDelay = `${Math.random() * -10}s`;
-			img.setAttribute('initial-left', img.style.left);
-			img.setAttribute('initial-top', img.style.top);
+			img.onload = () => {
+				img.className = 'symbol';
+				img.style.left = `${(x - img.width / 2) / width * 100}%`;
+				img.style.top = `${(y - img.height / 2) / height * 100}%`;
+				img.style.animationDelay = `${Math.random() * -10}s`;
+				img.setAttribute('initial-left', img.style.left);
+				img.setAttribute('initial-top', img.style.top);
 
-			symbolContainer.appendChild(img);
+				symbolContainer.appendChild(img);
 
-			symbols.push(img);
+				symbols.push(img);
+			};
 		});
 };
 
@@ -66,7 +68,6 @@ document.body.addEventListener('mousemove', event => {
 	pointerPosition.y = event.clientY;
 });
 
-let imageLoadedPrevFrame = false;
 let timePrevFrame = 0;
 const animate = () => {
 	const timeNow = performance.now();
@@ -81,14 +82,12 @@ const animate = () => {
 		let top = y + Math.cos(timeNow / 1000 + idx) * 0.001;
 
 		// Center symbol
-		const width = symbol.width || 0;
-		const height = symbol.height || 0;
-		left -= width / 2 / window.innerWidth * 100;
-		top -= height / 2 / window.innerHeight * 100;
+		const offsetX = (symbol.width || 0) / 2 / window.innerWidth;
+		const offsetY = (symbol.height || 0) / 2 / window.innerHeight;
 
 		// move away from pointer when it gets close
-		const dx = pointerPosition.x / window.innerWidth - x / 100;
-		const dy = pointerPosition.y / window.innerHeight - y / 100;
+		const dx = pointerPosition.x / window.innerWidth - (x / 100 + offsetX);
+		const dy = pointerPosition.y / window.innerHeight - (y / 100 + offsetY);
 		const distance = Math.sqrt(dx * dx + dy * dy);
 		const buffer = 1;
 
@@ -101,26 +100,9 @@ const animate = () => {
 		const currentLeft = parseFloat(symbol.style.left);
 		const currentTop = parseFloat(symbol.style.top);
 
-		// lerp between currentLeft and target left
 		const lerpFactor = 0.05;
 		left = lerp(currentLeft, left, lerpFactor);
 		top = lerp(currentTop, top, lerpFactor);
-
-		// const buffer = 50;
-		// if (distance < buffer) {
-		// 	const angle = Math.atan2(dy, dx);
-		// 	console.info(idx, Math.cos(angle) * (buffer - distance));
-
-		// 	left = x - Math.cos(angle) * (buffer - distance);
-		// 	top = y - Math.sin(angle) * (buffer - distance);
-		// }
-
-		// distance = >200; // nbo movement
-		// distance < 200 // move away inversely
-
-		// // if (distance < 50) {
-
-		// // }
 
 		symbol.style.left = `${left}%`;
 		symbol.style.top = `${top}%`;

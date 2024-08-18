@@ -97,6 +97,12 @@ body {
 	z-index: 1;
 }
 
+@media (max-width: 1040px) {
+	body {
+		padding: 0;
+	}
+}
+
 img, canvas {
 	display: block;
 	margin: 0 auto 40px;
