@@ -82,6 +82,11 @@ rsvpFind.addEventListener('submit', async event => {
 				${kid ? `
 					<input type="checkbox" name="needs_baby_bed-${idx}" value="1" id="needs_baby_bed-${idx}" ${needs_baby_bed ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
 					<label for="needs_baby_bed-${idx}">Needs baby bed</label>
+					TODO: question popup: we will do our best to get a bed for you
+					TDOO: make multiple choice: I bring my own bed (Question: please do if you have)
+												I need baby bed
+												Will sleep in normal bed
+
 				` : ''}
 			</fieldset>
 		`;

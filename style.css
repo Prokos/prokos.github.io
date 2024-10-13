@@ -146,6 +146,11 @@ ul, p {
 	line-height: 1.5em;
 }
 
+p {
+	margin: 0 100px;
+}
+
+.button,
 button {
 	font-family: "Work Sans", sans-serif;
 	background: #fff;
@@ -159,8 +164,11 @@ button {
 	margin: 20px 0;
 	padding: 10px 20px;
 	letter-spacing: 1px;
+	text-decoration: none;
+	display: inline-block;
 }
 
+.button:active:not([disabled]),
 button:active:not([disabled]) {
 	box-shadow: none;
 	position: relative;
