@@ -92,7 +92,7 @@ body {
 	border: 4px solid #444;
 	padding: 40px;
 	min-width: 350px;
-	background: #ffffffee;
+	background: #fffffff6;
 	position: relative;
 	z-index: 1;
 }
@@ -173,6 +173,13 @@ button:active:not([disabled]) {
 	box-shadow: none;
 	position: relative;
 	top: 3px;
+}
+
+#map {
+	display: block;
+	margin: 0 auto 20px;
+	border: 4px solid #444;
+	padding: 5px;
 }
 
 input[type=text] {
