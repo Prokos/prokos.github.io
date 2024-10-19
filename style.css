@@ -275,6 +275,11 @@ input[type=checkbox]:checked::before {
 
 .rsvp-field {
 	margin: 0 40px;
+	align-items: flex-start;
+}
+
+.rsvp-field > div {
+	display: flex;
 }
 
 .rsvp-field + .rsvp-field {
@@ -292,9 +297,30 @@ input[type=checkbox]:checked::before {
 	margin-right: 0;
 }
 
-.rsvp-field input[type=checkbox][disabled], .rsvp-field input[type=checkbox][disabled] + label {
+.rsvp-field input[type=radio] {
+	padding: 8px;
+	margin: 4px;
+	margin-right: 0;
+}
+
+
+.rsvp-field input[type=checkbox][disabled],
+.rsvp-field input[type=radio][disabled],
+.rsvp-field input[type=checkbox][disabled] + label,
+.rsvp-field input[type=radio][disabled] + label{
 	cursor: not-allowed;
 	opacity: 0.3;
+}
+
+.rsvp-field-kid-bed {
+	margin-left: auto;
+	display: flex;
+	flex-direction: column;
+	font-size: 16px;
+}
+
+.rsvp-field-kid-bed fieldset {
+	width: 100%;
 }
 
 button[disabled] {

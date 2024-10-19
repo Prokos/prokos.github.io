@@ -15,7 +15,7 @@ const localeOptions = {
 const rsvpFind = document.getElementById('rsvp-find');
 const rsvpFindSubmit = rsvpFind.querySelector('button[type=submit]');
 const rsvpResult = document.getElementById('rsvp-result');
-const rsvpName = document.getElementById('rsvp-name');
+// const rsvpName = document.getElementById('rsvp-name');
 const rsvpForm = document.getElementById('rsvp-form');
 const rsvpFields = document.getElementById('rsvp-fields');
 const rsvpFormSubmit = rsvpForm.querySelector('button[type=submit]');
@@ -52,7 +52,7 @@ rsvpFind.addEventListener('submit', async event => {
 
 	rsvpFind.style.display = 'none';
 	rsvpResult.style.display = 'block';
-	rsvpName.textContent = data.name;
+	// rsvpName.textContent = data.name;
 
 	rsvpFields.innerHTML = '';
 
@@ -66,27 +66,37 @@ rsvpFind.addEventListener('submit', async event => {
 	});
 
 	let showingKids = false;
-	sortedGuests.forEach(({ name, kid, needs_baby_bed, is_coming }, idx) => {
+
+	sortedGuests.forEach(({ name, kid, kid_bed, is_coming }, idx) => {
 		if (!name) return;
 
 		if (!showingKids && kid) {
 			showingKids = true;
-			rsvpFields.innerHTML += '<h3>Kids</h3>';
+			rsvpFields.innerHTML += '<br/><i>We have a limited amount of baby beds, if you are able to bring one yourself (looking at you Lithuanians!) please do so.</i><br/><br/>';
 		}
 
 		const html = `
 			<fieldset class="rsvp-field">
-				<input type="checkbox" name="guest-${idx}" value="1" id="guest-${idx}" ${is_coming ? 'checked' : ''} />
-				<label for="guest-${idx}">${name}</label>
+				<div>
+					<input type="checkbox" name="guest-${idx}" value="1" id="guest-${idx}" ${is_coming ? 'checked' : ''} />
+					<label for="guest-${idx}">${name}</label>
+				</div>
 
 				${kid ? `
-					<input type="checkbox" name="needs_baby_bed-${idx}" value="1" id="needs_baby_bed-${idx}" ${needs_baby_bed ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
-					<label for="needs_baby_bed-${idx}">Needs baby bed</label>
-					TODO: question popup: we will do our best to get a bed for you
-					TDOO: make multiple choice: I bring my own bed (Question: please do if you have)
-												I need baby bed
-												Will sleep in normal bed
-
+					<div class="rsvp-field-kid-bed">
+						<fieldset>
+							<input type="radio" name="kid_bed-${idx}" value="normal_bed" id="kid_bed-${idx}-normal_bed" ${!kid_bed || kid_bed === 'normal_bed' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
+							<label for="kid_bed-${idx}-normal_bed">Sleeps in normal bed</label>
+						</fieldset>
+						<fieldset>
+							<input type="radio" name="kid_bed-${idx}" value="bring_own" id="kid_bed-${idx}-bring_own" ${kid_bed === 'bring_own' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
+							<label for="kid_bed-${idx}-bring_own">We will bring a baby bed</label>
+						</fieldset>
+						<fieldset>
+							<input type="radio" name="kid_bed-${idx}" value="need_one" id="kid_bed-${idx}-need_one" ${kid_bed === 'need_one' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
+							<label for="kid_bed-${idx}-need_one">Needs a baby bed</label>
+						</fieldset>
+					</div>
 				` : ''}
 			</fieldset>
 		`;
@@ -103,13 +113,14 @@ rsvpFind.addEventListener('submit', async event => {
 
 		if (!guest.kid) return;
 
-		const needsBabyBedCheckbox = document.getElementById(`needs_baby_bed-${changedGuestId}`);
-		if (event.target.checked) {
-			needsBabyBedCheckbox.disabled = false;
-		} else {
-			needsBabyBedCheckbox.disabled = true;
-			needsBabyBedCheckbox.checked = false;
-		}
+		const kidBedRadioEls = document.querySelectorAll(`[name=kid_bed-${changedGuestId}]`);
+		kidBedRadioEls.forEach(radioEl => {
+			if (event.target.checked) {
+				radioEl.disabled = false;
+			} else {
+				radioEl.disabled = true;
+			}
+		});
 	});
 
 	rsvpForm.addEventListener('submit', async event => {
@@ -118,7 +129,7 @@ rsvpFind.addEventListener('submit', async event => {
 		const formData = new FormData(event.target);
 		guests.forEach((guest, idx) => {
 			guest.is_coming = formData.get(`guest-${idx}`) === '1';
-			guest.needs_baby_bed = formData.get(`needs_baby_bed-${idx}`) === '1';
+			guest.kid_bed = formData.get(`kid_bed-${idx}`);
 		});
 
 		const oldText = rsvpFormSubmit.textContent;
@@ -146,6 +157,7 @@ rsvpFind.addEventListener('submit', async event => {
 	document.getElementById('saved-at').textContent = data.updated_at ? 'RSVP last updated on ' + savedAt.toLocaleString(undefined, localeOptions) : '';
 });
 
-if (window.location.hash) {
-	rsvpFind.querySelector('input[name=key]').value = window.location.hash.slice(1);
-}
+const queryParams = new URLSearchParams(window.location.search);
+const key = queryParams.get('key');
+
+rsvpFind.querySelector('input[name=key]').value = key;
