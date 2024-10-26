@@ -52,16 +52,16 @@
 		</p>
 		<hr/>
 		<h2>Program</h2>
+		<h3>👰‍♂️ Wedding</h3>
 		<p>
 			On Saturday will be the wedding ceremony, dinner and party.<br/><br/>
 			We will be doing this wedding the Lithuanian way, which means everybody will be able to stay over at the venue on us - so you can party as long as you want!<br/><br/>
 			We're trying our best to make the most comfortable lodging for everyone, but please be prepared to share a room and/or bathroom.<br/><br/>
-			The second day there will be breakfast (mimosas!) and lunch (šašlykai!) for those who want to stay and relax in the nature, and enjoy the natural pool or a hottub - so don't forget your swimsuits.<br/><br/>
 		</p>
 		<h3>👙 Afterparty</h3>
 		<p>
-			For those who want to continue the party, there will be additional relaxing and time for potential activities in the days after the wedding.<br/><br/>
-			First of all, for those who would like to stay a second night with us at the venue (from Sunday to Monday), this is possible at your own cost of €20 per person. Please let us know in the RSVP and we will make sure there's a spot for you.<br/><br/>
+			The second day there will be breakfast (mimosas!) and lunch (šašlykai!) for those who want to stay and relax in the nature, and enjoy the natural pool or a hottub - so don't forget your swimsuits.<br/><br/>
+			If that's not enough, you can also stay a second night with us at the venue (from Sunday to Monday), this is possible at your own cost of €20 per person. Please let us know in the RSVP and we will make sure there's a spot for you.<br/><br/>
 			For those of you staying around longer in Lithuania, the venue is located in the Trakai District which is close to many interesting places to visit. Please refer to our travel guide for inspiration.
 		</p>
 		<hr />
@@ -73,22 +73,42 @@
 			<input type="text" placeholder="Your key" name="key" />
 			<button type="submit">Find me 🔍</button><br/>
 			<div class="small" id="cannot-find">Sorry, we cannot find a guest with that key, are you sure it's correct?<br/></div>
-			<i>Lost your key? <a href="#contact">Contact us</a></i>
-
+			<i class="lost">Lost your key? <a href="#contact">Contact us</a></i>
 		</form>
-		<div id="rsvp-result">
-			<h2>RSVP</h2>
 
-			Please let us know with who you are coming so we can ensure everyone has a nice stay!<br/>
-			<br/>
+		<div id="rsvp-result">
+			<div id="rsvp-coming">
+				<p>
+					Will (some) of you be coming?
+				</p>
+
+				<button class="coming" data-value="yes">Yes 🎉</button>
+				<button class="coming" data-value="no">No 😢</button>
+			</div>
+
+			<div id="rsvp-sad">
+				<p>We're sad to hear you can't make it 😢<br/>
+				But we understand, and hope to see you soon!</p>
+				<br/>
+				<button class="edit-rsvp">Edit my RSVP ✏️</button>
+			</div>
+			<!-- <h2>RSVP</h2> -->
 
 			<form id="rsvp-form">
+				<p>Awesome! Who will be coming?</p>
+				<br/>
 				<div id="rsvp-fields"></div>
 
-				<button type="submit">Save RSVP 💌</button>
-
-				<div class="small" id="saved-at"></div>
+				<button type="submit">RSVP 💌</button>
+				<!-- <div class="small" id="saved-at"></div> -->
 			</form>
+
+			<div id="rsvp-submitted">
+				<p>Thanks for RSVP'ing! ❤️<br/>We can't wait to see you there!</p>
+				<div id="rsvp-details"></div>
+				<br/>
+				<button class="edit-rsvp">Edit my RSVP ✏️</button>
+			</div>
 
 		</div>
 		<!-- <hr /> -->
@@ -100,9 +120,9 @@
 		<p>
 			If you're too lazy to drive for 17 hours, don't worry - airplanes exist!<br/><br/>
 			Both Vilnius and Kaunas are good options to fly to. But from the Netherlands there are two main options:<br/><br/>
-			<strong>AirBaltic (Amsterdam -> Vilnius)</strong><br/>
+			<strong>✈️ AirBaltic (Amsterdam -> Vilnius)</strong><br/>
 			Comfortable, slightly more expensive.<br/><br/>
-			<strong>WizzAir (Eindhoven -> Vilnius)</strong><br/>
+			<strong>✈️ WizzAir (Eindhoven -> Vilnius)</strong><br/>
 			Can be cheaper, but is less reliable, and pay extra attention to the luggage options as it's included not in the price and can be expensive.
 		</p>
 		<hr/>

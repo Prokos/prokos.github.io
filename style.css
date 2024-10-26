@@ -136,10 +136,17 @@ hr {
 
 ul {
 	margin: 20px auto;
-	list-style-type: square;
+	list-style-type: none;
 	list-style-position: inside;
 	width: max-content;
-	text-align: left;
+	max-width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+li {
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 ul, p {
@@ -175,6 +182,11 @@ button:active:not([disabled]) {
 	top: 3px;
 }
 
+button.disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
 #map {
 	display: block;
 	margin: 0 auto 20px;
@@ -189,12 +201,15 @@ input[type=text] {
 	padding: 11px 10px;
 	border: 4px dashed #444;
 	width: 200px;
-	margin: 20px 0;
 	position: relative;
 }
 
 input[type=text]::placeholder {
 	color: #bbb;
+}
+
+#rsvp-find {
+	margin: 20px 0;
 }
 
 #rsvp-find input[type=text] {
@@ -204,7 +219,12 @@ input[type=text]::placeholder {
 }
 
 #rsvp-find button {
-	margin: 0;
+	margin: 10px 0 0;
+}
+
+#rsvp-find .lost {
+	margin-top: 12px;
+	display: block;
 }
 
 input[type=text]:focus {
@@ -233,6 +253,10 @@ fieldset {
 	display: none;
 }
 
+#rsvp-result p {
+	margin: 0 1px;
+}
+
 input[type=radio],
 input[type=checkbox] {
 	/* Add if not using autoprefixer */
@@ -248,6 +272,7 @@ input[type=checkbox] {
 	padding: 10px;
 	cursor: pointer;
 	position: relative;
+	height: 0;
 }
 
 input[type=radio] + label,
@@ -273,6 +298,11 @@ input[type=checkbox]:checked::before {
 	transform: translate(-50%, -50%);
 }
 
+#rsvp-form,
+#rsvp-sad {
+	display: none;
+}
+
 .rsvp-field {
 	margin: 0 40px;
 	align-items: flex-start;
@@ -280,6 +310,7 @@ input[type=checkbox]:checked::before {
 
 .rsvp-field > div {
 	display: flex;
+	width: 100%;
 }
 
 .rsvp-field + .rsvp-field {
@@ -329,6 +360,7 @@ button[disabled] {
 }
 
 #cannot-find {
+	margin-top: 12px;
 	display: none;
 	font-weight: bold;
 }
@@ -348,6 +380,11 @@ button[disabled] {
 
 	.rsvp-field {
 		margin: 0 5px;
+		flex-wrap: wrap;
+	}
+
+	.rsvp-field-kid-bed {
+		margin: 0 10px;
 	}
 
 	#rsvp-result {
