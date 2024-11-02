@@ -118,6 +118,7 @@ h1 {
 
 h2 {
 	font-size: 50px;
+	margin-bottom: 40px;
 }
 
 h3 {
@@ -128,7 +129,7 @@ h3 {
 hr {
 	width: 150px;
 	max-width: 50%;
-	margin: 40px auto;
+	margin: 60px auto;
 	background: none;
 	border: 0;
 	border-top: 4px dashed #444;

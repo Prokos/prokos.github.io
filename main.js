@@ -313,6 +313,9 @@ rsvpFind.addEventListener('submit', async event => {
 					console.error(error);
 					return;
 				}
+			} else {
+				formSaving();
+				await formDoneSaving();
 			}
 
 			rsvpComing.style.display = 'none';
@@ -332,6 +335,9 @@ rsvpFind.addEventListener('submit', async event => {
 
 	document.querySelectorAll('button.edit-rsvp').forEach(button => {
 		button.addEventListener('click', async event => {
+			formSaving();
+			await formDoneSaving();
+
 			rsvpComing.style.display = 'block';
 			rsvpForm.style.display = 'none';
 			rsvpSad.style.display = 'none';
