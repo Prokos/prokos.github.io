@@ -86,6 +86,12 @@ body {
 	padding: 0;
 }
 
+@media (orientation: portrait) {
+	body {
+		margin: 0;
+	}
+}
+
 .container {
 	width: 100vw;
 	max-width: 1000px;
