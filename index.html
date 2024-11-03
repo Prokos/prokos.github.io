@@ -3,11 +3,13 @@
 
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+
 	<title>Berta & Kasper's Wedding - June 28th 2025</title>
 	<link rel="stylesheet" href="style.css?v2">
 	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 	<script src="https://cdn.jsdelivr.net/gh/kchapelier/fast-2d-poisson-disk-sampling@1.0.3/build/fast-poisson-disk-sampling.min.js"></script>
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
 	<!-- <script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script> -->
 </head>
 
@@ -67,7 +69,7 @@
 		<hr />
 		<h2 id="rsvp">Let us know if you're coming!</h2>
 		<p>
-			We really hope you can join us! Please let us know if you can make it by filling in your key below and then setting your RSVP!
+			We really hope you can join us! Please let us know if you can make it by RSVP'ing below!
 		</p>
 		<form id="rsvp-find">
 			<input type="text" placeholder="Your key" name="key" />
@@ -77,9 +79,11 @@
 		</form>
 
 		<div id="rsvp-result">
+			<div id="rsvp-names"></div>
+
 			<div id="rsvp-coming">
 				<p>
-					Will (some) of you be coming?
+					Will you be joining us?
 				</p>
 
 				<button class="coming" data-value="yes">Yes 🎉</button>
@@ -90,7 +94,7 @@
 				<p>We're sad to hear you can't make it 😢<br/>
 				But we understand, and hope to see you soon!</p>
 				<br/>
-				<button class="edit-rsvp">Edit my RSVP ✏️</button>
+				<button class="edit-rsvp">Change my RSVP ✏️</button>
 			</div>
 			<!-- <h2>RSVP</h2> -->
 
@@ -99,7 +103,7 @@
 				<br/>
 				<div id="rsvp-fields"></div>
 
-				<button type="submit">RSVP 💌</button>
+				<button type="submit">Save RSVP 💌</button>
 				<!-- <div class="small" id="saved-at"></div> -->
 			</form>
 
@@ -107,8 +111,10 @@
 				<p>Thanks for RSVP'ing! ❤️<br/>We can't wait to see you there!</p>
 				<div id="rsvp-details"></div>
 				<br/>
-				<button class="edit-rsvp">Edit my RSVP ✏️</button>
+				<button class="edit-rsvp">Change my RSVP ✏️</button>
 			</div>
+
+			<i>You can set and change your RSVP until January 31st</i>
 
 		</div>
 		<!-- <hr /> -->

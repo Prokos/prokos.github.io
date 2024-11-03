@@ -81,9 +81,9 @@ body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: stretch;
-	padding: 20px;
 	text-align: center;
-	gap: 20px;
+	margin: 40px 0;
+	padding: 0;
 }
 
 .container {
@@ -95,12 +95,6 @@ body {
 	background: #fffffff6;
 	position: relative;
 	z-index: 1;
-}
-
-@media (max-width: 1040px) {
-	body {
-		padding: 0;
-	}
 }
 
 img, canvas {
@@ -226,6 +220,11 @@ input[type=text]::placeholder {
 #rsvp-find .lost {
 	margin-top: 12px;
 	display: block;
+}
+
+#rsvp-names {
+	font-weight: bold;
+	margin-bottom: 20px;
 }
 
 input[type=text]:focus {

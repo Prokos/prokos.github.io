@@ -15,7 +15,7 @@ const localeOptions = {
 const rsvpFind = document.getElementById('rsvp-find');
 const rsvpFindSubmit = rsvpFind.querySelector('button[type=submit]');
 const rsvpResult = document.getElementById('rsvp-result');
-// const rsvpName = document.getElementById('rsvp-name');
+const rsvpNames = document.getElementById('rsvp-names');
 const rsvpSad = document.getElementById('rsvp-sad');
 const rsvpComing = document.getElementById('rsvp-coming');
 const rsvpForm = document.getElementById('rsvp-form');
@@ -99,7 +99,7 @@ const renderRSVPForm = data => {
 		const html = `
 			<fieldset class="rsvp-field">
 				<div>
-					<input type="checkbox" name="guest-${idx}" value="1" id="guest-${idx}" ${is_coming ? 'checked' : ''} />
+					<input type="checkbox" name="guest-${idx}" value="1" id="guest-${idx}" ${is_coming === true ? 'checked' : ''} />
 					<label for="guest-${idx}">${name}</label>
 				</div>
 
@@ -134,7 +134,6 @@ const renderRSVPForm = data => {
 			</div>
 		</fieldset>
 	`;
-
 
 	let canSubmit = false;
 
@@ -259,12 +258,7 @@ const renderRSVPForm = data => {
 	// document.getElementById('saved-at').textContent = data.updated_at ? 'RSVP last updated on ' + savedAt.toLocaleString(undefined, localeOptions) : '';
 }
 
-rsvpFind.addEventListener('submit', async event => {
-	event.preventDefault();
-
-	const formData = new FormData(event.target);
-	const key = formData.get('key');
-
+const showRSVP = async key => {
 	const oldText = rsvpFindSubmit.textContent;
 	rsvpFindSubmit.disabled = true;
 	rsvpFindSubmit.textContent = 'Searching...';
@@ -272,6 +266,12 @@ rsvpFind.addEventListener('submit', async event => {
 	const { data: newData, error } = await client.rpc('getVisitorByKey', { value: key })
 
 	data = newData;
+
+	if (data) {
+		if (data.guests.length === 1 && typeof data.guests[0].is_coming === 'undefined') {
+			data.guests[0].is_coming = true;
+		}
+	}
 
 	rsvpFindSubmit.disabled = false;
 	rsvpFindSubmit.textContent = oldText;
@@ -288,6 +288,9 @@ rsvpFind.addEventListener('submit', async event => {
 
 	rsvpFind.style.display = 'none';
 	rsvpResult.style.display = 'block';
+
+	const guestNames = data.guests.map(guest => guest.name);
+	rsvpNames.innerHTML = guestNames.slice(0, -1).join(', ') + (guestNames.length > 1 ? ' & ' : '') + guestNames.slice(-1);
 
 	document.querySelectorAll('button.coming').forEach(button => {
 		button.addEventListener('click', async event => {
@@ -365,9 +368,32 @@ rsvpFind.addEventListener('submit', async event => {
 		rsvpForm.style.display = 'none';
 		rsvpSad.style.display = 'none';
 	}
+}
+
+rsvpFind.addEventListener('submit', async event => {
+	event.preventDefault();
+
+	const formData = new FormData(event.target);
+	const key = formData.get('key');
+
+	showRSVP(key);
 });
 
 const queryParams = new URLSearchParams(window.location.search);
 const key = queryParams.get('key');
 
 rsvpFind.querySelector('input[name=key]').value = key;
+
+if (key) {
+	showRSVP(key);
+
+	localStorage.setItem('rsvp-key', key);
+} else {
+	const storedKey = localStorage.getItem('rsvp-key');
+
+	if (storedKey) {
+		showRSVP(storedKey);
+	}
+}
+
+
