@@ -74,7 +74,6 @@ i, .small {
 	}
 }
 
-
 body {
 	position: relative;
 	display: flex;
@@ -84,6 +83,7 @@ body {
 	text-align: center;
 	margin: 40px 0;
 	padding: 0;
+	gap: 20px;
 }
 
 @media (orientation: portrait) {
@@ -141,13 +141,6 @@ ul {
 	list-style-position: inside;
 	width: max-content;
 	max-width: 100%;
-	overflow: hidden;
-	white-space: nowrap;
-}
-
-li {
-	text-overflow: ellipsis;
-	overflow: hidden;
 }
 
 ul, p {
@@ -401,4 +394,64 @@ button[disabled] {
 	p {
 		margin: 0 20px;
 	}
+}
+
+#travel-guide {
+	text-align: left;
+	padding-top: 20px;
+}
+
+#travel-guide h2 {
+	margin-bottom: 20px;
+}
+
+#travel-guide h2::before,
+#travel-guide h2::after {
+	content: "";
+}
+
+#travel-guide p {
+	margin: 0;
+}
+
+#travel-guide ul {
+	width: 100%;
+	margin: 0 20px;
+	list-style-type: square;
+	list-style-position: outside;
+}
+
+#travel-guide li {
+	width: 80%;
+	margin-bottom: 10px;
+}
+
+#travel-guide li:last-child {
+	margin-bottom: 0;
+}
+
+#travel-guide hr {
+	margin: 20px 0;
+	width: 100%;
+	max-width: 100%;
+}
+
+.table-container {
+	overflow-x: auto;
+}
+
+.table {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.th {
+	font-weight: bold;
+}
+
+.th,
+.td {
+	width: 100%;
+	padding: 10px;
+	word-break: normal;
 }

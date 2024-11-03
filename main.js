@@ -384,14 +384,12 @@ const key = queryParams.get('key');
 
 rsvpFind.querySelector('input[name=key]').value = key;
 
-if (key) {
+if (key && key !== 'null') {
 	showRSVP(key);
-
-	localStorage.setItem('rsvp-key', key);
 } else {
 	const storedKey = localStorage.getItem('rsvp-key');
 
-	if (storedKey) {
+	if (key && storedKey !== 'null') {
 		showRSVP(storedKey);
 	}
 }
