@@ -12,6 +12,7 @@ const localeOptions = {
 	minute: 'numeric',
 };
 
+const countdown = document.getElementById('countdown');
 const rsvpFind = document.getElementById('rsvp-find');
 const rsvpFindSubmit = rsvpFind.querySelector('button[type=submit]');
 const rsvpResult = document.getElementById('rsvp-result');
@@ -394,4 +395,19 @@ if (key && key !== 'null') {
 	}
 }
 
+const today = new Date();
+// const weddingDate = new Date('2024-11-09T00:00:00Z');
+const weddingDate = new Date('2025-06-28T15:00:00Z');
+const daysUntilTheWedding = Math.ceil((weddingDate - today) / (1000 * 60 * 60 * 24));
+const span = countdown.querySelector('span');
 
+
+if (daysUntilTheWedding === 1) {
+	countdown.textContent = 'Tomorrow is the big day!';
+} else if (daysUntilTheWedding === 0) {
+	countdown.textContent = 'Today is the big day!';
+} else if (daysUntilTheWedding > 0) {
+	span.textContent = daysUntilTheWedding;
+} else {
+	countdown.textContent = 'The big day was ' + Math.abs(daysUntilTheWedding) + ' days ago!';
+}
