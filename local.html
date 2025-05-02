@@ -1,0 +1,30 @@
+<html>
+    <head> 
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            const { createClient } = supabase;
+            const SUPABASE_URL = 'https://asvezzujmmovbbaycpqe.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzdmV6enVqbW1vdmJiYXljcHFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM4MTc4NzksImV4cCI6MjAzOTM5Mzg3OX0.afW8plWDS1BrHmKATwP4-sxnJfOI4asMEo5lHATn52g';
+            const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            client
+            .channel('guest_updates')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'rsvps' }, (payload) => {
+                console.log('Row updated:', payload.new);
+
+                // Example: Notify yourself
+                if (payload.new.guests.some(guest => guest.is_coming)) {
+                sendNotification(`Group ${payload.new.name} updated their RSVP!`);
+                }
+            })
+            .subscribe();
+
+            function sendNotification(message) {
+            // Replace with your notification logic (email, SMS, etc.)
+            console.log('Notification:', message);
+            }
+        </script>
+    </body>
+</html>

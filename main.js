@@ -3,6 +3,35 @@ const SUPABASE_URL = 'https://asvezzujmmovbbaycpqe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzdmV6enVqbW1vdmJiYXljcHFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM4MTc4NzksImV4cCI6MjAzOTM5Mzg3OX0.afW8plWDS1BrHmKATwP4-sxnJfOI4asMEo5lHATn52g';
 const client = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+const foodOptions = [
+	{
+		id: 'kid',
+		label: 'Kids menu',
+		kidsOnly: true,
+	},
+	{
+		id: 'no_food',
+		label: 'Nothing',
+		kidsOnly: true,
+	},
+	{
+		id: 'meat',
+		label: 'Meat',
+	},
+	{
+		id: 'fish',
+		label: 'Fish',
+	},
+	{
+		id: 'veggie',
+		label: 'Veggie',
+	},
+	{
+		id: 'vegan',
+		label: 'Vegan',
+	},
+];
+
 const localeOptions = {
 	weekday: 'long',
 	year: 'numeric',
@@ -67,6 +96,10 @@ const renderRSVPDetails = () => {
 				}
 			}
 
+			if (guest.food) {
+				text += `, eats ${foodOptions.find(({ id }) => id === guest.food)?.label}`;
+			}
+
 			return text;
 		}).join('<br/>')}<br/>
 		${data.extra_night ? 'You are staying an extra night' : 'You are not staying an extra night'}
@@ -89,37 +122,52 @@ const renderRSVPForm = data => {
 
 	let showingKids = false;
 
-	sortedGuests.forEach(({ name, kid, kid_bed, is_coming }, idx) => {
+	sortedGuests.forEach(({ name, kid, kid_bed, is_coming, food }, idx) => {
 		if (!name) return;
 
 		if (!showingKids && kid) {
 			showingKids = true;
-			rsvpFields.innerHTML += '<br/><i>We have a limited amount of baby beds, if you are able to bring one yourself (looking at you Lithuanians!) please do so.</i><br/><br/>';
+			rsvpFields.innerHTML += '<br/><i>We have a limited amount of baby beds, if you are able to bring one yourself (looking at you Lithuanians!) please do so.<br/><br/>Dinner will be served around 20:00</i><br/><br/>';
 		}
 
 		const html = `
 			<fieldset class="rsvp-field">
-				<div>
-					<input type="checkbox" name="guest-${idx}" value="1" id="guest-${idx}" ${is_coming === true ? 'checked' : ''} />
-					<label for="guest-${idx}">${name}</label>
+				<div class="rsvp-top-row">
+					<div>
+						<input type="checkbox" name="guest-${idx}" value="1" id="guest-${idx}" ${is_coming === true ? 'checked' : ''} />
+						<label for="guest-${idx}">${name}</label>
+					</div>
+
+					${kid ? `
+						<div class="rsvp-field-kid-bed">
+							<fieldset>
+								<input type="radio" name="kid_bed-${idx}" value="normal_bed" id="kid_bed-${idx}-normal_bed" ${!kid_bed || kid_bed === 'normal_bed' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
+								<label for="kid_bed-${idx}-normal_bed">Sleeps in normal bed</label>
+							</fieldset>
+							<fieldset>
+								<input type="radio" name="kid_bed-${idx}" value="bring_own" id="kid_bed-${idx}-bring_own" ${kid_bed === 'bring_own' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
+								<label for="kid_bed-${idx}-bring_own">We will bring a baby bed</label>
+							</fieldset>
+							<fieldset>
+								<input type="radio" name="kid_bed-${idx}" value="need_one" id="kid_bed-${idx}-need_one" ${kid_bed === 'need_one' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
+								<label for="kid_bed-${idx}-need_one">Needs a baby bed</label>
+							</fieldset>
+						</div>
+					` : ''}
 				</div>
 
-				${kid ? `
-					<div class="rsvp-field-kid-bed">
-						<fieldset>
-							<input type="radio" name="kid_bed-${idx}" value="normal_bed" id="kid_bed-${idx}-normal_bed" ${!kid_bed || kid_bed === 'normal_bed' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
-							<label for="kid_bed-${idx}-normal_bed">Sleeps in normal bed</label>
-						</fieldset>
-						<fieldset>
-							<input type="radio" name="kid_bed-${idx}" value="bring_own" id="kid_bed-${idx}-bring_own" ${kid_bed === 'bring_own' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
-							<label for="kid_bed-${idx}-bring_own">We will bring a baby bed</label>
-						</fieldset>
-						<fieldset>
-							<input type="radio" name="kid_bed-${idx}" value="need_one" id="kid_bed-${idx}-need_one" ${kid_bed === 'need_one' ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
-							<label for="kid_bed-${idx}-need_one">Needs a baby bed</label>
-						</fieldset>
+				<div class="rsvp-field-food">
+					<strong>Would like to eat</strong>
+
+					<div class="rsvp-food-fieldsets">
+						${foodOptions.filter(({ kidsOnly }) => !kidsOnly || kid).map(({ id, label }, i) => `
+							<fieldset>
+								<input type="radio" name="food-${idx}" value="${id}" id="food-${idx}-${id}" ${food === id ? 'checked' : ''} ${is_coming ? '' : 'disabled'} />
+								<label for="food-${idx}-${id}">${label}</label>
+							</fieldset>
+						`).join('\n')}
 					</div>
-				` : ''}
+				</div>
 			</fieldset>
 		`;
 
@@ -165,6 +213,21 @@ const renderRSVPForm = data => {
 			});
 		}
 
+		// Toggle food buttons
+		const foodCheckboxes = document.querySelectorAll('[name^=food-]');
+		foodCheckboxes.forEach(checkbox => {
+			const [key, id] = checkbox.id.split('-');
+			const guestId = id;
+			const guest = data.guests[guestId];
+
+			if (guest.is_coming) {
+				checkbox.disabled = false;
+			} else {
+				checkbox.disabled = true;
+				checkbox.checked = false;
+			}
+		});
+
 		// Toggle extra night checkbox
 		const extraNightCheckbox = document.getElementById('extra-night');
 		if (data.guests.some(guest => guest.is_coming)) {
@@ -191,6 +254,7 @@ const renderRSVPForm = data => {
 		data.guests.forEach((guest, idx) => {
 			guest.is_coming = formData.get(`guest-${idx}`) === '1';
 			guest.kid_bed = formData.get(`kid_bed-${idx}`);
+			guest.food = formData.get(`food-${idx}`);
 		});
 
 		// Toggle kid bed buttons
@@ -342,12 +406,23 @@ const showRSVP = async key => {
 			formSaving();
 			await formDoneSaving();
 
-			rsvpComing.style.display = 'block';
-			rsvpForm.style.display = 'none';
-			rsvpSad.style.display = 'none';
-			rsvpSubmitted.style.display = 'none';
+			// If you already said you're coming - immediately show the form
+			// this prevents you from having to click the button again (but doesnt allow you to easily UNRSVP, which is fine now that we're almost there)
+			if (data.is_coming === true) {
+				rsvpComing.style.display = 'none';
+				rsvpForm.style.display = 'block';
+				rsvpSad.style.display = 'none';
+				rsvpSubmitted.style.display = 'none';
 
-			renderRSVPForm(data);
+				renderRSVPForm(data);
+			} else {
+				rsvpComing.style.display = 'block';
+				rsvpForm.style.display = 'none';
+				rsvpSad.style.display = 'none';
+				rsvpSubmitted.style.display = 'none';
+
+				renderRSVPForm(data);
+			}
 		});
 	});
 

@@ -305,6 +305,12 @@ input[type=checkbox]:checked::before {
 .rsvp-field {
 	margin: 0 40px;
 	align-items: flex-start;
+	flex-direction: column;
+}
+
+.rsvp-top-row  > *{
+	display: flex;
+	flex-direction: row;
 }
 
 .rsvp-field > div {
@@ -318,12 +324,12 @@ input[type=checkbox]:checked::before {
 
 .rsvp-field label {
 	display: block;
-	padding: 12px;
+	padding: 18px;
 	width: 100%;
 }
 
 .rsvp-field input[type=checkbox] {
-	margin: 12px;
+	margin: 16px;
 	margin-right: 0;
 }
 
@@ -333,7 +339,6 @@ input[type=checkbox]:checked::before {
 	margin-right: 0;
 }
 
-
 .rsvp-field input[type=checkbox][disabled],
 .rsvp-field input[type=radio][disabled],
 .rsvp-field input[type=checkbox][disabled] + label,
@@ -342,15 +347,45 @@ input[type=checkbox]:checked::before {
 	opacity: 0.3;
 }
 
-.rsvp-field-kid-bed {
+
+.rsvp-field-kid-bed,
+.rsvp-field-food {
 	margin-left: auto;
 	display: flex;
 	flex-direction: column;
 	font-size: 16px;
 }
 
+.rsvp-field-food {
+	flex-direction: column;
+    padding: 14px 10% 0;
+    text-align: left;
+    border-top: 4px dotted #eee;
+}
+
+.rsvp-food-fieldsets {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 8px 0;
+}
+
+.rsvp-food-fieldsets fieldset {
+	width: 50%;
+}
+
+.rsvp-food-fieldsets fieldset label {
+	margin: 4px 0;
+    height: 1em;
+    display: flex;
+    align-items: center;
+}
+
 .rsvp-field-kid-bed fieldset {
 	width: 100%;
+}
+
+.rsvp-field-food {
+	flex-direction: column;
 }
 
 button[disabled] {
