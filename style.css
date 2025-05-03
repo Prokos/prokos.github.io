@@ -358,7 +358,7 @@ input[type=checkbox]:checked::before {
 
 .rsvp-field-food {
 	flex-direction: column;
-    padding: 14px 10% 0;
+    padding: 14px 5% 0;
     text-align: left;
     border-top: 4px dotted #eee;
 }

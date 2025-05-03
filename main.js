@@ -6,7 +6,7 @@ const client = createClient(SUPABASE_URL, SUPABASE_KEY);
 const foodOptions = [
 	{
 		id: 'kid',
-		label: 'Kids menu',
+		label: 'Kid menu (chicken fingers + fries)',
 		kidsOnly: true,
 	},
 	{
@@ -15,16 +15,20 @@ const foodOptions = [
 		kidsOnly: true,
 	},
 	{
-		id: 'meat',
-		label: 'Meat',
+		id: 'duck',
+		label: 'Duck leg',
 	},
 	{
-		id: 'fish',
-		label: 'Fish',
+		id: 'pork',
+		label: 'Pork neck steak',
 	},
 	{
-		id: 'veggie',
-		label: 'Veggie',
+		id: 'salmon',
+		label: 'Salmon steak',
+	},
+	{
+		id: 'eggplant',
+		label: 'Stuffed eggplant (vegetarian)',
 	},
 	{
 		id: 'vegan',
@@ -127,7 +131,7 @@ const renderRSVPForm = data => {
 
 		if (!showingKids && kid) {
 			showingKids = true;
-			rsvpFields.innerHTML += '<br/><i>We have a limited amount of baby beds, if you are able to bring one yourself (looking at you Lithuanians!) please do so.<br/><br/>Dinner will be served around 20:00</i><br/><br/>';
+			rsvpFields.innerHTML += '<br/><i>We have a limited amount of baby beds, if you are able to bring one yourself (looking at you Lithuanians!) please do so.<br/><br/>Main dish will be served around 20:00</i><br/><br/>';
 		}
 
 		const html = `
