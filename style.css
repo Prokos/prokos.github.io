@@ -520,3 +520,13 @@ button[disabled] {
 		max-width: 100%;
 	}
 }
+
+@media (max-width: 700px) {
+	.rsvp-food-fieldsets {
+		flex-direction: column;
+	}
+
+	.rsvp-food-fieldsets fieldset {
+		width: 100%;
+	}
+}
