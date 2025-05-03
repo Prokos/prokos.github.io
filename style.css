@@ -371,6 +371,7 @@ input[type=checkbox]:checked::before {
 
 .rsvp-food-fieldsets fieldset {
 	width: 50%;
+	flex-grow: 1;
 }
 
 .rsvp-food-fieldsets fieldset label {
